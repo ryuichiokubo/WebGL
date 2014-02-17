@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>demo</title>
+<script src="three.min.js"></script>
+<script>
+window.addEventListener("DOMContentLoaded", function(){
+  var width = 600;
+  var height = 600;
+  var fov    = 80;
+  var aspect = width / height;
+  var near   = 1;
+  var far    = 1000;
+
+  var camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
+  camera.position.z = 500;
+
+  var scene = new THREE.Scene();
+  var geometry = new THREE.CubeGeometry(200, 200, 200);
+  var material = new THREE.MeshLambertMaterial( { color: 0x660000 } );
+  var cubeMesh = new THREE.Mesh( geometry, material);
+  scene.add( cubeMesh );
+
+  var directionalLight = new THREE.DirectionalLight( 0xffffff, 3 );
+  directionalLight.position.z = 3;
+  scene.add( directionalLight );
+
+  var renderer = new THREE.WebGLRenderer();
+  renderer.setSize( width, height );
+  document.body.appendChild( renderer.domElement );
+  renderer.render( scene, camera );
+
+  function rendering(){
+    cubeMesh.rotation.x += 0.01;
+    cubeMesh.rotation.y += 0.01;
+    renderer.render( scene, camera );
+    setTimeout(rendering, 30);
+  }
+  rendering();
+});
+</script>
+</head>
+<body>
+</body>
+</html>
