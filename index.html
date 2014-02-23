@@ -29,15 +29,15 @@
       scene.add(ambient);
  
       // 表示する物体の作成
-      var geometry = new THREE.SphereGeometry(1, 32, 32);
-      var texture  = THREE.ImageUtils.loadTexture('images/earth.jpg');
-      var material = new THREE.MeshPhongMaterial({
-        color: 0xffffff, ambient: 0xffffff,
-        specular: 0xcccccc, shininess:20, metal:true,
-        map: texture, bumpMap: texture, bumpScale: 0.01 });
-      var mesh = new THREE.Mesh(geometry, material);
-      scene.add(mesh);
- 
+      var mesh   = new THREE.Object3D(); // 読み込みが完了するまでのダミー
+      var loader = new THREE.JSONLoader();
+      loader.load('./js/ladybird.js', function(geometry, materials) {
+        //mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial); // XXX error
+        mesh = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial( { overdraw: true } ));
+        mesh.scale = new THREE.Vector3(0.3, 0.3, 0.3);
+        //geometry.materials[0].ambient = geometry.materials[0].color; // XXX error
+        scene.add(mesh);
+      }); 
       // カメラコントロールを作成
       var controls = new THREE.OrbitControls(camera);
       controls.center = new THREE.Vector3(0, 0, 0);
